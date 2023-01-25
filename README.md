@@ -1,1 +1,1 @@
-# lecture1
+https://t.me/mashaaaa7
