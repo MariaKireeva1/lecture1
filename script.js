@@ -1,10 +1,11 @@
 let userEmail = prompt('Write your email');
 let userPassword = prompt('Write your password');
 let attempts = 3;
+let error = '';
+
 
 while ((userEmail.length > 15 || userEmail.startsWith(' ') || userEmail.endsWith(' ') || userEmail.startsWith('@') || userEmail.endsWith('@') || !userEmail.includes('@') || !userEmail.endsWith('.com') || userPassword.search(/[A-Z]/g) == -1 || userPassword.length < 4 || userPassword.length > 12) &&  attempts > 0) {
-
-    let error = '';
+   
     if (userEmail.length > 15) {
         error = error + `* Email should consist less than 15 symbols
         `
@@ -51,6 +52,7 @@ while ((userEmail.length > 15 || userEmail.startsWith(' ') || userEmail.endsWith
     alert(`You have ${attempts} more attempts.
         ${error}`);
     attempts = attempts - 1;
+    error = '';
     userEmail = prompt('Write your email again');
     userPassword = prompt('Write your password again');
 }
@@ -60,7 +62,7 @@ if (attempts <= -1) {
 }
 
 
-if(userPassword.search(/[A-Z]/g) && userPassword.length > 4 && userPassword.length < 12 && userEmail.length < 15 && !userEmail.startsWith('@') && !userEmail.endsWith('@') && userEmail.includes('@') && userEmail.endsWith('.com')) {
+if(error == '') {
     document.write(`<pre>
     Your account succesfully registered!
     email: ${userEmail}
