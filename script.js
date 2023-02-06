@@ -1,45 +1,69 @@
-const userName = prompt('Ваше имя');
-const userSurname = prompt('Ваша фамилия');
-const birthMonth = +prompt('В каком месяце по счету вы родились?');
-const birthDate = +prompt('Число вашего рождения');
-const birthYear = +prompt('В каком году вы родились?');
-const currentYear = 2022;
-const userAge = currentYear - birthYear;
+let userEmail = prompt('Write your email');
+let userPassword = prompt('Write your password');
+let attempts = 3;
 
+while ((userEmail.length > 15 || userEmail.startsWith(' ') || userEmail.endsWith(' ') || userEmail.startsWith('@') || userEmail.endsWith('@') || !userEmail.includes('@') || !userEmail.endsWith('.com') || userPassword.search(/[A-Z]/g) == -1 || userPassword.length < 4 || userPassword.length > 12) &&  attempts > 0) {
 
-let zodiac;
+    let error = '';
+    if (userEmail.length > 15) {
+        error = error + `* Email should consist less than 15 symbols
+        `
+    }   
 
-if (((birthMonth === 1 && birthDate >= 20)||(birthMonth === 2 && birthDate <= 18))) {
-    zodiac = 'Aquarius';
-} else if (((birthMonth === 2 && birthDate >= 19) || (birthMonth === 3 && birthDate <= 20))) {
-    zodiac = 'Pisces';
-} else if(((birthMonth === 3 && birthDate >= 21) || (birthMonth === 4 && birthDate <= 19))) {
-    zodiac = 'Aries';
-} else if (((birthMonth === 4 && birthDate >= 20) || (birthMonth === 5 && birthDate <= 20))) {
-    zodiac = 'Taurus';
-} else if (((birthMonth === 5 && birthDate >= 21) || (birthMonth === 6 && birthDate <= 20))) {
-    zodiac = 'Gemini';
-} else if(((birthMonth === 6 && birthDate >= 21) || (birthMonth === 7 && birthDate <= 22))) {
-    zodiac = 'Cancer';
-} else if(((birthMonth === 7 && birthDate >= 23) || (birthMonth === 8 && birthDate <= 22))) {
-    zodiac = 'Leo';
-} else if(((birthMonth === 8 && birthDate >= 23) || (birthMonth === 9 && birthDate <= 22))) {
-    zodiac = 'Virgo';
-} else if(((birthMonth === 9 && birthDate >= 23) || (birthMonth === 10 && birthDate <= 22))) {
-    zodiac = 'Libra';
-} else if(((birthMonth === 10 && birthDate >= 23) || (birthMonth === 11 && birthDate <= 21))) {
-    zodiac = 'Scorpio';
-} else if(((birthMonth === 11 && birthDate >= 22) || (birthMonth === 12 && birthDate <= 21))) {
-    zodiac = 'Sagittarius';
-} else if(((birthMonth === 12 && birthDate >= 22) || (birthMonth === 1 && birthDate <= 19))) {
-    zodiac = 'Capricorn';
-} else {
-    zodiac = 'impossible to determine your zodiac sign';
+    if (userEmail.startsWith(' ')) {
+        error = error + `* Email must not start with a gap
+        `
+    }
+
+    if (userEmail.endsWith(' ')) {
+        error = error + `* Email must not end with a gap
+        `
+    }
+
+    if (userEmail.startsWith('@') || userEmail.endsWith('@')) {
+        error = error + `* Email must not start/end with '@'
+        `
+    }
+
+    if (!userEmail.includes('@')) {
+        error = error + `* Email must include at least one '@'
+        `
+    }
+
+    if (!userEmail.endsWith('.com')) {
+        error = error + `* You have to end your email with ' .com'
+        `
+    }
+
+    if (userPassword.length < 4) {
+        error = error + `* Password should not be less than 4 symbols
+        `;
+    }
+    if (userPassword.length > 12) {
+        error = error + `* Password should not be more than 12 symbols
+        `;
+    }
+    if (userPassword.search(/[A-Z]/g) == -1) {
+        error = error + `* Password should include at least one capital letter
+        `;
+    }
+
+    alert(`You have ${attempts} more attempts.
+        ${error}`);
+    attempts = attempts - 1;
+    userEmail = prompt('Write your email again');
+    userPassword = prompt('Write your password again');
+}
+
+if (attempts <= -1) {
+    alert(`Sorry, you don't have any more attempts.`)
 }
 
 
-if ((birthYear % 4) === 0 || (birthYear % 400) === 0) {
-    document.write(`User Bio: ${userName} ${userSurname}, ${userAge} years old (leap year), ${zodiac};`)
-} else {
-    document.write(`User Bio: ${userName} ${userSurname}, ${userAge} years old, ${zodiac};`)
+if(userPassword.search(/[A-Z]/g) && userPassword.length > 4 && userPassword.length < 12 && userEmail.length < 15 && !userEmail.startsWith('@') && !userEmail.endsWith('@') && userEmail.includes('@') && userEmail.endsWith('.com')) {
+    document.write(`<pre>
+    Your account succesfully registered!
+    email: ${userEmail}
+    password: ${userPassword}
+    </pre>`);
 }
