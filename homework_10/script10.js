@@ -29,7 +29,7 @@ const ITCompany = {
 
 let workerName = prompt('Your name');
 let workerPosition = prompt('Your position (available positions: frontEnd, backEnd, scramMaster, tester)');
-let workerSalary = prompt('Your salary')
+let workerSalary = +prompt('Your salary')
 
 
 function addNewWorker(name, position, salary) {
@@ -49,11 +49,11 @@ function addNewWorker(name, position, salary) {
 let notProperPositions = 0;
 for (let i = 0; i < ITCompany.vacancies.length; i++) { 
     for (key in ITCompany.vacancies[i]) {
-        if (key !== workerPosition) {
+        if (key.toLowerCase() !== workerPosition.toLocaleLowerCase()) {
             notProperPositions = notProperPositions + 1;
         } else {
             for (j in ITCompany.vacancies[i][key]) {
-                if (ITCompany.vacancies[i][key][j] == workerSalary) {
+                if (ITCompany.vacancies[i][key][j] >= workerSalary) {
                     addNewWorker(workerName, workerPosition, workerSalary);
                     break;
                 } else {
