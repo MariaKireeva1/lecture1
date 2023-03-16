@@ -6,3 +6,16 @@ td {
 table {
     margin-bottom: 20px;
 }
+
+body {
+    height: 100vh;
+    width: 100vw;
+}
+
+.block{
+    width: 100px;
+    height: 100px;
+    background: black;
+    position: relative;
+    transition: 0.5s;
+}
