@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuck Norris Jokes</title>
+    <link rel="stylesheet" href="./style18.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="content__header">Hey!</div>
+            <div class="content__subheader">Let’s try to find a joke for you:</div>
+          
+            <form>
+                <ul class="content__choice">
+                    <li class="choice">
+                        <input type="radio" name="" id="random">
+                        <label for="random">Random</label>
+                    </li>
+    
+                    <li class="choice">
+                        <input type="radio" name="" id="categories">
+                        <label for="categories">From caterogies</label>
+
+                        <div class="category__list"></div>
+                    </li>
+                   
+
+                    <li class="choice">
+                        <input type="radio" name="" id="search">
+                        <label for="search">Search</label>
+
+                        <div class="choice__input">
+                            <input type="text" placeholder="Free text search...">
+                        </div>
+                    </li>
+                </ul>
+                
+                <button>Get a joke</button>
+            </form>
+
+            <ul class="content__list"></ul>
+        </div>
+
+        <div class="favourite">
+            <div class="favourite__header">Favourite</div>
+            <ul class="favourite__list"></ul>
+        </div>
+    </div>
+
+    <script src="./script18.js"></script>
+</body>
+
+</html>
