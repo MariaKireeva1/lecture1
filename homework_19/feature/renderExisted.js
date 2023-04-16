@@ -35,8 +35,12 @@ export let renderExistedHeroes = (hero) => {
     btnUpdate.addEventListener('click', (event) => {
       let id = event.target.parentElement.dataset.id;
       const updateFavourite = document.querySelector(`div[data-id="${id}"] .updateFavourite`);
+      const updateSelect = document.querySelector(`div[data-id="${id}"] .updateSelect`);
+      const updateInput = document.querySelector(`div[data-id="${id}"] .updateInput`);
 
       const updatedHero = {
+        name: updateInput.value,
+        comics: updateSelect.value,
         favourite: updateFavourite.checked
       }
       api.UPDATE(updatedHero, id)
