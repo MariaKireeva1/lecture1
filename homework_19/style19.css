@@ -1,0 +1,31 @@
+.item {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 300px;
+    padding: 20px;
+    box-sizing: content-box;
+    margin: 50px auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+button {
+    border: 2px solid black;
+    border-radius: 7px;
+    padding: 5px;
+    background-color: white;
+    cursor: pointer;
+    width: 70px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.heroesList, .addHero {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
