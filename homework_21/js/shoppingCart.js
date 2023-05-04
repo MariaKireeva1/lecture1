@@ -43,7 +43,7 @@ const renderProductInCart = async (order) => {
 
     cartCountInput.addEventListener('input', async () => {
         let updatedArray = storage.shoppingCart.findIndex((item) => item.id == order.id);
-        storage.shoppingCart[updatedArray].count = cartCountInput.value;
+        storage.shoppingCart[updatedArray].count = Number(cartCountInput.value);
         cartCountInput.setAttribute('value', cartCountInput.value);
         cartTotal.innerHTML = `$${countTotal(product, order)}`
         countTotalInSummary()
@@ -76,17 +76,22 @@ const countTotalInSummary = async () => {
 
 
 
-const completeOrder = async () => {
+  const completeOrder = async () => {
     storage.shoppingCart.forEach((item) => {
-        storage.orders.push(item)
+        let productIndex = storage.orders.findIndex((el) => el.id == item.id);
+        if (productIndex < 0) {
+          storage.orders.push(item);
+        } else {
+          storage.orders[productIndex].count += item.count
+        }
+          
     })
     storage.shoppingCart = [];
     localStorage.setItem('userData', JSON.stringify(storage))
-    cartAmount.innerHTML = `${storage.shoppingCart.length}`;
-    await api.UpdateShoppingCart(storage.id, storage);
+    cartAmount.innerHTML = `${storage.shoppingCart.length}`
+    await api.UpdateShoppingCart(storage.id, storage)
     window.location.href = './account.html';
 }
-
 orderBtn.addEventListener('click', completeOrder)
 
 storage.shoppingCart.forEach((order) => {
