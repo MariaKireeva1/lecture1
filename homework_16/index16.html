@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style16.css">
+</head>
+<body>
+   <section class="order"> 
+        <form>
+        <div>
+            <label for="userName" class="label">Ваше имя:</label>
+            <input type="text" id="userName" required>
+           </div>
+    
+            <div>
+                <label for="sizes" class="label">Выберите размер бургера</label>
+                <select required>
+                    <option value="small" id="size">Small</option>
+                    <option value="large" id="size">Large</option>
+                </select>
+            </div>
+    
+           <div>
+            <p>Выберите начинку для бургера:</p>
+            <label><input type="checkbox" value="potato" id="stuffing"></input>Potato</label>
+            <label><input type="checkbox" value="cheese" id="stuffing">Cheese</label>
+            <label><input type="checkbox" value="salad" id="stuffing">Salad</label>
+           </div>
+    
+           <div>
+            <p>Выберите топпинг для бургера:</p>
+            <label><input type="checkbox" value="mayo" id="topping">Mayo</label>
+            <label><input type="checkbox" value="spices" id="topping">Spices</label>
+           </div>
+           <div class="order__error">Выберите минимум одну начинку и топпинг</div>
+           <div>
+            <textarea cols="30" rows="10" placeholder="Сообщение к заказу" required></textarea>
+           </div>
+    
+           <button type="submit">Заказать</button>
+        </form>
+    
+        <div class="order__list"></div>
+      </section>
+
+    <script src="./script16.js"></script>
+</body>
+</html>
