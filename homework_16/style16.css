@@ -1,0 +1,26 @@
+div {
+    margin-bottom: 40px;
+}
+
+p {
+    margin-bottom: 8px;
+}
+form {
+    padding: 30px;
+    box-sizing: content-box;
+    margin-right: 20px;
+    border: 1px solid grey;
+}
+
+.label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.order {
+    display: flex;
+}
+.order__error {
+    color: red;
+    display: none;
+}
