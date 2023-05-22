@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in</title>
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="header">
+                <a class="header__logo" href="./index.html"> <img src="./images/logo.png" alt="logo"></a>
+
+                <div class="header__info">
+                    <div class="header__greeting">
+                        Hi, <a href="./sign.html">Log in</a>
+                    </div>
+
+                    <div class="header__stick"></div>
+
+                    <div class="header__cart">
+                        <a href="./shoppingCart.html"><img src="./images/shopping-cart.png" alt="cart"></a>
+                        <div class="header__cart_circle">0</div>
+                    </div>
+
+                    <a href="./index.html" class="header__logout">Log out</a>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="sign">
+
+        <div class="signIn">
+            <h2>Secure Sign In</h2>
+            <div class="error"></div>
+            <h3>For current customers</h3>
+            <form class="sign__form">
+                <input type="text" id="signEmail" placeholder="Email Address" required>
+                <input type="password" id="signPassword" placeholder="Password" required>
+                <button class="btn">Sign In</button>
+            </form>
+        </div>
+        <div class="sign__divide"></div>
+        <div class="createAccount">
+            <h2>Quick Registration</h2>
+            <div class="createError"></div>
+            <h3>For new customers</h3>
+            <form class="createAcc__form">
+                <input type="text" id="createName" placeholder="Full name" required>
+                <input type="text" id="createEmail" placeholder="Email Address" required>
+                <input type="password" id="createPassword" placeholder="Password" required>
+                <input type="password" id="verifyPassword" placeholder="Verify Password" required>
+                <button class="btn">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="./js/sign.js" type="module"></script>
+</body>
+
+</html>
