@@ -1,17 +1,18 @@
-import React, { useState, useRef, useContext } from 'react';
-import Button from '../common/Button';
+import React, { useState, useRef } from 'react';
+import Button from '../../common/Button';
 import Input from '../Input';
 import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Box } from '@mui/material';
-import ShoppingCartContext from '../../context/ShoppingCartContext';
+import { useDispatch } from 'react-redux';
+import { setCartAmountThunk, setIsAuthThunk } from '../../store/usersAction';
 
 function CreateAccForm(props) {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const formElement = useRef(null);
+    const errorElement = useRef(null);
     const [name, setName] = useState('')
-    const { setIsAuth } = useContext(ShoppingCartContext)
-
     const [password, setPassword] = useState('')
     const [checkPassword, setCheckPassword] = useState('')
     const [email, setEmail] = useState('')
@@ -25,7 +26,6 @@ function CreateAccForm(props) {
             setErrorActive(false);
         }, 3000);
     };
-
 
     const updateName = (value) => {
         setName(value)
@@ -61,12 +61,14 @@ function CreateAccForm(props) {
                 password: password,
                 status: true
             };
-            api.postUser(newUser);
+            const result = await api.postUser(newUser).then(res => res.json());
+            localStorage.setItem('userData', JSON.stringify(result))
             formElement.current.reset()
-            setIsAuth(true)
+            dispatch(setIsAuthThunk(true))
             navigate('/main')
         }
     }
+
 
     return (
         <form ref={formElement}>

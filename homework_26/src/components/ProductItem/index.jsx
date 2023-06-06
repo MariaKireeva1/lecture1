@@ -1,9 +1,10 @@
-import React, { useRef, useContext } from 'react';
+import React, { useRef } from 'react';
 import './style.sass'
 import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
-import ShoppingCartContext from '../../context/ShoppingCartContext';
 import { Box } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCartAmountThunk } from '../../store/usersAction';
 
 
 function ProductItem({ item }) {
@@ -11,10 +12,10 @@ function ProductItem({ item }) {
     let storage = JSON.parse(localStorage.getItem('userData'));
     const navigate = useNavigate()
     const cartImgRef = useRef(null);
-    const { cartAmount, setCartAmount } = useContext(ShoppingCartContext)
     const isItemInCart = storage && storage.shoppingCart.find(cartItem => cartItem.id === item.id);
     const cartImgClass = isItemInCart ? 'item__cart product__cart—in' : 'item__cart';
-
+    const dispatch = useDispatch()
+    const cartAmount = useSelector(store => store.cartAmount)
     const updateCart = () => {
         if (!storage) {
             navigate('/login')
@@ -24,13 +25,13 @@ function ProductItem({ item }) {
         if (cartImgRef.current.classList.contains('product__cart—in')) {
             let updatedOrdersArray = storage.shoppingCart.filter((item) => item.id !== cartImgRef.current.dataset.id);
             storage.shoppingCart = updatedOrdersArray;
-            setCartAmount(cartAmount - 1)
+            dispatch(setCartAmountThunk(cartAmount - 1))
         } else {
             storage.shoppingCart.push({
                 id: cartImgRef.current.dataset.id,
                 count: 1
             })
-            setCartAmount(cartAmount + 1)
+            dispatch(setCartAmountThunk(cartAmount + 1))
         }
 
         cartImgRef.current.classList.toggle('product__cart—in');
@@ -43,7 +44,7 @@ function ProductItem({ item }) {
     return (
         <Box className={item.sale ? 'item item__sale' : 'item'} data-title={item.title} data-id={item.id}>
             <Box className="item__img">
-                <Box component='img' src={`./images/products/${item.img}.png`}  alt={item.title} />
+                <Box component='img' src={`./images/products/${item.img}.png`} alt={item.title} />
             </Box>
 
             {

@@ -1,17 +1,19 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef } from 'react';
 import Input from '../Input';
-import Button from '../common/Button';
+import Button from '../../common/Button';
 import { api } from '../../services/api';
 import './style.sass'
 import { useNavigate } from 'react-router-dom';
 import { Typography, Box } from '@mui/material';
-import ShoppingCartContext from '../../context/ShoppingCartContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsAuthThunk, setCartAmountThunk } from '../../store/usersAction';
 
 
 function SignForm(props) {
+    const cartAmount = useSelector(store => store.cartAmount)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const formElement = useRef(null);
-    const { setIsAuth } = useContext(ShoppingCartContext)
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const [errorActive, setErrorActive] = useState(false);
@@ -50,7 +52,8 @@ function SignForm(props) {
             localStorage.setItem('userData', JSON.stringify(existedUser))
             api.changeStatus(existedUser.id, true);
             formElement.current.reset()
-            setIsAuth(true)
+            dispatch(setIsAuthThunk(true))
+            dispatch(setCartAmountThunk(cartAmount))
             navigate('/main')
         }
     }
