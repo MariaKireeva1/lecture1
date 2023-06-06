@@ -9,13 +9,24 @@ import ShoppingCartContext from '../../context/ShoppingCartContext';
 function CreateAccForm(props) {
     const navigate = useNavigate()
     const formElement = useRef(null);
-    const errorElement = useRef(null);
     const [name, setName] = useState('')
     const { setIsAuth } = useContext(ShoppingCartContext)
 
     const [password, setPassword] = useState('')
     const [checkPassword, setCheckPassword] = useState('')
     const [email, setEmail] = useState('')
+    const [errorActive, setErrorActive] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const showError = (message) => {
+        setErrorMessage(message);
+        setErrorActive(true);
+        setTimeout(() => {
+            setErrorActive(false);
+        }, 3000);
+    };
+
+
     const updateName = (value) => {
         setName(value)
     }
@@ -40,18 +51,9 @@ function CreateAccForm(props) {
         const existedUser = users.find(item => item.email == email);
 
         if (existedUser) {
-            errorElement.current.classList.add('error-active')
-            errorElement.current.innerHTML = `User with email ${email} already exist`
-            setTimeout(() => {
-                errorElement.current.classList.remove('error-active')
-            }, 3000)
+            showError(`User with email ${email} already exist`)
         } else if (password !== checkPassword) {
-            errorElement.current.classList.add('error-active')
-            errorElement.current.innerHTML = `Password does not match`
-            setTimeout(() => {
-                errorElement.current.classList.remove('error-active')
-            }, 3000)
-
+            showError(`Password does not match`)
         } else {
             const newUser = {
                 name: name,
@@ -66,11 +68,12 @@ function CreateAccForm(props) {
         }
     }
 
-
     return (
         <form ref={formElement}>
             <Typography variant='h2' sx={{ fontSize: '1.5em', fontWeight: 'bold', margin: '20px 0' }}>Quick Registration</Typography>
-            <Box className="error" ref={errorElement}></Box>
+            <Box className={`error ${errorActive ? 'error-active' : ''}`}>
+                {errorMessage}
+            </Box>
             <Typography variant='h3' sx={{ fontSize: '1.17em', fontWeight: 'bold', margin: '20px 0' }}>For new customers</Typography>
             <Input type="text" placeholder="Full name" action={updateName} />
             <Input type="text" placeholder="Email Address" action={updateEmail} />

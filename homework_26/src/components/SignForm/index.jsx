@@ -11,10 +11,20 @@ import ShoppingCartContext from '../../context/ShoppingCartContext';
 function SignForm(props) {
     const navigate = useNavigate()
     const formElement = useRef(null);
-    const errorElement = useRef(null);
     const { setIsAuth } = useContext(ShoppingCartContext)
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
+    const [errorActive, setErrorActive] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const showError = (message) => {
+        setErrorMessage(message);
+        setErrorActive(true);
+        setTimeout(() => {
+            setErrorActive(false);
+        }, 3000);
+    };
+
     const updatePassword = (value => {
         setPassword(value)
     })
@@ -32,17 +42,9 @@ function SignForm(props) {
         const existedUser = users.find(item => item.email == email);
 
         if (!existedUser) {
-            errorElement.current.classList.add('error-active')
-            errorElement.current.innerHTML = 'Invalid Email'
-            setTimeout(() => {
-                errorElement.current.classList.remove('error-active')
-            }, 3000)
+            showError('Invalid Email')
         } else if (existedUser.password !== password) {
-            errorElement.current.classList.add('error-active')
-            errorElement.current.innerHTML = 'Invalid Password'
-            setTimeout(() => {
-                errorElement.current.classList.remove('error-active')
-            }, 3000)
+            showError('Invalid Password')
         } else {
             existedUser.status = true
             localStorage.setItem('userData', JSON.stringify(existedUser))
@@ -56,7 +58,9 @@ function SignForm(props) {
     return (
         <form className="signIn" ref={formElement}>
             <Typography variant='h2' sx={{ fontSize: '1.5em', fontWeight: 'bold', margin: '20px 0' }}>Secure Sign In</Typography>
-            <Box className="error" ref={errorElement}></Box>
+            <Box className={`error ${errorActive ? 'error-active' : ''}`}>
+                {errorMessage}
+            </Box>
             <Typography variant='h3' sx={{ fontSize: '1.17em', fontWeight: 'bold', margin: '20px 0' }}>For current customers</Typography>
             <Input placeholder='Email Address' type='text' action={updateEmail} />
             <Input placeholder='Password' type='password' action={updatePassword} />

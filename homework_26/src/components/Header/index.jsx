@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import './style.sass'
 import { api } from '../../services/api';
-import logo from '../../images/logo.png';
-import cart from '../../images/shopping-cart.png';
 import { useNavigate } from 'react-router-dom';
 import ShoppingCartContext from '../../context/ShoppingCartContext';
 import { AppBar, Toolbar, Box, Typography } from '@mui/material';
@@ -25,7 +23,7 @@ function Header(props) {
     return (
         <AppBar position='static'>
             <Toolbar className="header">
-                <Box className="header__logo" onClick={() => navigate('/main')}> <Box component='img' src={logo}  alt="logo"></Box></Box>
+                <Box className="header__logo" onClick={() => navigate('/main')}> <Box component='img'  src={`./images/logo.png`}  alt="logo"></Box></Box>
 
                 <Box className="header__info">
                     <Box className="header__greeting">
@@ -44,7 +42,7 @@ function Header(props) {
                     <Box className="header__stick"></Box>
 
                     <Box className="header__cart">
-                        <Box component='img' img src={cart} alt="cart" onClick={() => navigate('/cart')}></Box>
+                        <Box component='img' src={`./images/shopping-cart.png`} alt="cart" onClick={() => navigate('/cart')}></Box>
                         <Box className="header__cart_circle">{storage ? cartAmount : 0}</Box>
                     </Box>
 
