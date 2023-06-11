@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../../services/api';
 import ProductItem from '../ProductItem';
 import { Box, Typography } from '@mui/material';
-function Category({ name }) {
 
+function Category({ name }) {
     const [products, setProducts] = useState([]);
 
 
@@ -25,6 +25,8 @@ function Category({ name }) {
                     products.map((product) => {
                         if (product.category === name) {
                             return <ProductItem key={product.id} item={product} />
+                        } else {
+                            return null
                         }
                     })
                 }

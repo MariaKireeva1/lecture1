@@ -5,12 +5,11 @@ import { api } from '../../services/api';
 import './style.sass'
 import { useNavigate } from 'react-router-dom';
 import { Typography, Box } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsAuthThunk, setCartAmountThunk } from '../../store/usersAction';
+import { useDispatch } from 'react-redux';
+import { setUserAction, setIsAuthAction } from '../../store/usersAction';
 
 
 function SignForm(props) {
-    const cartAmount = useSelector(store => store.cartAmount)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const formElement = useRef(null);
@@ -36,7 +35,6 @@ function SignForm(props) {
 
     const sign = async (e) => {
         if (password === '' || email === '') {
-            console.log(password, email);
             return
         }
         e.preventDefault()
@@ -49,11 +47,11 @@ function SignForm(props) {
             showError('Invalid Password')
         } else {
             existedUser.status = true
-            localStorage.setItem('userData', JSON.stringify(existedUser))
+            dispatch(setUserAction(existedUser))
+            localStorage.setItem('userId', existedUser.id)
             api.changeStatus(existedUser.id, true);
             formElement.current.reset()
-            dispatch(setIsAuthThunk(true))
-            dispatch(setCartAmountThunk(cartAmount))
+            dispatch(setIsAuthAction(true))
             navigate('/main')
         }
     }

@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react';
 import Login from './pages/Login/Login';
 import Main from './pages/Main/Main';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import PrivateRoute from './components/hoc/PrivateRoute';
+import PrivateRoute from './common/hoc/PrivateRoute';
 import ShoppingCart from './pages/ShoppingCart/ShoppingCart';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsAuthThunk } from './store/usersAction';
+import { getUserThunk, setIsAuthAction } from './store/usersAction';
 function App(props) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const isAuth = useSelector(store => store.isAuth)
-
   useEffect(() => {
-    let storage = JSON.parse(localStorage.getItem('userData'))
-    if (storage) {
-      dispatch(setIsAuthThunk(true))
+    let userId = JSON.parse(localStorage.getItem('userId'))
+    if (userId) {
+      dispatch(getUserThunk(userId))
+      dispatch(setIsAuthAction(true))
     } else {
-      dispatch(setIsAuthThunk(false))
+      dispatch(setIsAuthAction(false))
     }
 
     navigate('/main');

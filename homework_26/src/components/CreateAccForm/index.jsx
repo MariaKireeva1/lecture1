@@ -5,13 +5,12 @@ import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { setCartAmountThunk, setIsAuthThunk } from '../../store/usersAction';
+import { postUserThunk, setIsAuthAction } from '../../store/usersAction';
 
 function CreateAccForm(props) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const formElement = useRef(null);
-    const errorElement = useRef(null);
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [checkPassword, setCheckPassword] = useState('')
@@ -61,10 +60,9 @@ function CreateAccForm(props) {
                 password: password,
                 status: true
             };
-            const result = await api.postUser(newUser).then(res => res.json());
-            localStorage.setItem('userData', JSON.stringify(result))
+            dispatch(postUserThunk(newUser))
             formElement.current.reset()
-            dispatch(setIsAuthThunk(true))
+            dispatch(setIsAuthAction(true))
             navigate('/main')
         }
     }

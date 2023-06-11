@@ -1,6 +1,9 @@
+import { api } from "../services/api"
 
 export const SET_AUTH = 'SET_AUTH'
-export const SET_CART_AMOUNT = 'SET_CART_AMOUNT'
+export const SET_USER = 'SET_USER'
+export const UPDATE_CART = 'UPDATE_CART'
+
 const actionCreator = (type, payload) => {
     if (payload == undefined) {
         return { type }
@@ -9,17 +12,31 @@ const actionCreator = (type, payload) => {
     }
 }
 
-const setIsAuthThunkAction = (isAuth) => actionCreator(SET_AUTH, isAuth)
-const setCartAmountAction = (amount) => actionCreator(SET_CART_AMOUNT, amount)
+export const setIsAuthAction = (isAuth) => actionCreator(SET_AUTH, isAuth)
+export const setUserAction = (user) => actionCreator(SET_USER, user)
 
-export const setCartAmountThunk = (amount) => {
-    return (dispatch) => {
-        dispatch(setCartAmountAction(amount));
-    };
-};
 
-export const setIsAuthThunk = (isAuth) => {
-    return (dispatch) => {
-        dispatch(setIsAuthThunkAction(isAuth))
+export const getUserThunk = (id) => {
+    return async (dispatch) => {
+        await api.getUser(id).then(({data}) => dispatch(setUserAction(data)))
+    }
+}
+
+export const updateCartThunk = (id, cart) => {
+    return async (dispatch) => {
+        await api.updateShoppingCart(id, cart).then((res) => {
+           res.json().then(data => dispatch(setUserAction(data)))
+        })
+    }
+}
+
+export const postUserThunk = (user) => {
+    return async (dispatch) => {
+        await api.postUser(user).then((res) => {
+            res.json().then(data => {
+                localStorage.setItem('userId', data.id)
+                dispatch(setUserAction(data))
+            })
+        })
     }
 }

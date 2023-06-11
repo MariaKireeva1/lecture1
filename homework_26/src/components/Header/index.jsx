@@ -4,20 +4,21 @@ import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Box, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCartAmountThunk, setIsAuthThunk } from '../../store/usersAction';
+import { setIsAuthAction, setUserAction } from '../../store/usersAction';
 
 
 function Header(props) {
-    let storage = JSON.parse(localStorage.getItem('userData'));
+    let userId = JSON.parse(localStorage.getItem('userId'));
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const cartAmount = useSelector((store) => store.cartAmount)
+    let user = useSelector(store => store.user)
+
 
     const logOut = () => {
-        dispatch(setCartAmountThunk(0))
-        localStorage.removeItem('userData');
-        api.changeStatus(storage.id, false)
-        dispatch(setIsAuthThunk(false))
+        localStorage.removeItem('userId');
+        api.changeStatus(userId, false)
+        dispatch(setIsAuthAction(false))
+        dispatch(setUserAction(null))
         navigate('/main')
     }
 
@@ -29,9 +30,9 @@ function Header(props) {
 
                 <Box className="header__info">
                     <Box className="header__greeting">
-                        {storage ?
+                        {user ?
                             <Box className="header__greeting">
-                                Hi, <Typography variant='span'>{storage.name}</Typography>
+                                Hi, <Typography variant='span'>{user.name}</Typography>
                             </Box>
                             :
                             <Box className="header__greeting" >
@@ -45,10 +46,10 @@ function Header(props) {
 
                     <Box className="header__cart">
                         <Box component='img' src={`./images/shopping-cart.png`} alt="cart" onClick={() => navigate('/cart')}></Box>
-                        <Box className="header__cart_circle">{cartAmount}</Box>
+                        <Box className="header__cart_circle">{user ? user.shoppingCart.length : 0}</Box>
                     </Box>
 
-                    <Box onClick={() => logOut()} className={storage ? "header__logout header__logout-active" : "header__logout"}>Log out</Box>
+                    <Box onClick={() => logOut()} className={user ? "header__logout header__logout-active" : "header__logout"}>Log out</Box>
                 </Box>
             </Toolbar>
         </AppBar>

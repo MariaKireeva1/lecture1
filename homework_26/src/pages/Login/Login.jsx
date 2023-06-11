@@ -2,17 +2,18 @@ import React from 'react';
 import Header from '../../components/Header';
 import SignForm from '../../components/SignForm';
 import CreateAccForm from '../../components/CreateAccForm';
+import { Box } from '@mui/material';
 
 function Login(props) {
   return (
-    <div>
-        <Header />
-      <div className='sign'>
-      <SignForm />
-      <div className='sign__divide'></div>
-      <CreateAccForm/>
-      </div>
-    </div>
+    <>
+      <Header />
+      <Box className='sign'>
+        <SignForm />
+        <Box className='sign__divide'></Box>
+        <CreateAccForm />
+      </Box>
+    </>
   );
 }
 

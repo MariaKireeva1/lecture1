@@ -2,19 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Category from '../../components/Category';
 import Header from '../../components/Header';
 import { api } from '../../services/api';
-import { useDispatch } from 'react-redux';
-import { setCartAmountThunk } from '../../store/usersAction';
+import { useSelector } from 'react-redux';
 
 function Main(props) {
-    const dispatch = useDispatch()
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
+    let user = useSelector(store => store.user)
     useEffect(() => {
-
-        let storage = JSON.parse(localStorage.getItem('userData'));
-        if (storage && storage.shoppingCart.length > 0) {
-            dispatch(setCartAmountThunk(storage.shoppingCart.length))
-        } 
 
         const getProducts = async () => {
             let products = await api.getProducts();
@@ -39,8 +33,8 @@ function Main(props) {
         <>
             <Header />
             {
-                categories.map((item) => {
-                    return <Category name={item} />
+                categories.map((item, index) => {
+                    return <Category key={index} name={item} />
                 })
             }
         </>

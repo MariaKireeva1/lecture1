@@ -1,42 +1,50 @@
 import React, { useRef } from 'react';
 import './style.sass'
-import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCartAmountThunk } from '../../store/usersAction';
-
+import { updateCartThunk } from '../../store/usersAction';
 
 function ProductItem({ item }) {
 
-    let storage = JSON.parse(localStorage.getItem('userData'));
+    let userId = JSON.parse(localStorage.getItem('userId'));
+    let user = useSelector(store => store.user)
     const navigate = useNavigate()
     const cartImgRef = useRef(null);
-    const isItemInCart = storage && storage.shoppingCart.find(cartItem => cartItem.id === item.id);
-    const cartImgClass = isItemInCart ? 'item__cart product__cart—in' : 'item__cart';
+    const cartImgClass = user && user.shoppingCart && user.shoppingCart.find(cartItem => cartItem.id === item.id)
+        ? 'item__cart product__cart—in'
+        : 'item__cart';
     const dispatch = useDispatch()
-    const cartAmount = useSelector(store => store.cartAmount)
-    const updateCart = () => {
-        if (!storage) {
+
+
+    const updateCart = (item) => {
+        if (!userId) {
             navigate('/login')
             return
         }
 
-        if (cartImgRef.current.classList.contains('product__cart—in')) {
-            let updatedOrdersArray = storage.shoppingCart.filter((item) => item.id !== cartImgRef.current.dataset.id);
-            storage.shoppingCart = updatedOrdersArray;
-            dispatch(setCartAmountThunk(cartAmount - 1))
-        } else {
-            storage.shoppingCart.push({
-                id: cartImgRef.current.dataset.id,
-                count: 1
-            })
-            dispatch(setCartAmountThunk(cartAmount + 1))
-        }
 
-        cartImgRef.current.classList.toggle('product__cart—in');
-        api.UpdateShoppingCart(storage.id, storage)
-        localStorage.setItem('userData', JSON.stringify(storage));
+        let existInCart = user.shoppingCart.find(cartItem => cartItem.id === item.id)
+        if (existInCart) {
+            let updatedCart = user.shoppingCart.filter(cartItem => cartItem.id !== item.id)
+            const updatedUser = {
+                ...user,
+                shoppingCart: updatedCart
+            };
+            dispatch(updateCartThunk(userId, updatedUser))
+        } else {
+            let updatedCart = [...user.shoppingCart,
+            {
+                id: item.id,
+                count: 1,
+            }
+            ]
+            const updatedUser = {
+                ...user,
+                shoppingCart: updatedCart
+            };
+            dispatch(updateCartThunk(userId, updatedUser))
+        }
     }
 
 
@@ -58,7 +66,7 @@ function ProductItem({ item }) {
                             </Box>
                             <Box className="item__info-price">${item.price - (item.price * item.salePercent / 100)}</Box>
                         </Box>
-                        <Box className={cartImgClass} data-id={item.id} onClick={() => updateCart()} ref={cartImgRef}><Box component='img' src={`./images/shopping-cart.png`} alt="cart" /></Box>
+                        <Box className={cartImgClass} data-id={item.id} onClick={() => updateCart(item)} ref={cartImgRef}><Box component='img' src={`./images/shopping-cart.png`} alt="cart" /></Box>
                     </>
                     :
                     <>
@@ -66,7 +74,7 @@ function ProductItem({ item }) {
                             <Box className="item__info-name">{item.title}</Box>
                             <Box className="item__info-price">${item.price}</Box>
                         </Box>
-                        <Box className={cartImgClass} data-id={item.id} onClick={() => updateCart()} ref={cartImgRef}><Box component='img'src={`./images/shopping-cart.png`} alt="cart" /></Box>
+                        <Box className={cartImgClass} data-id={item.id} onClick={() => updateCart(item)} ref={cartImgRef}><Box component='img' src={`./images/shopping-cart.png`} alt="cart" /></Box>
                     </>
             }
         </Box>
