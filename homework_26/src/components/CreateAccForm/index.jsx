@@ -1,88 +1,105 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import Button from '../../common/Button';
-import Input from '../Input';
 import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { postUserThunk, setIsAuthAction } from '../../store/usersAction';
+import { useFormik } from 'formik';
 
-function CreateAccForm(props) {
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const formElement = useRef(null);
-    const [name, setName] = useState('')
-    const [password, setPassword] = useState('')
-    const [checkPassword, setCheckPassword] = useState('')
-    const [email, setEmail] = useState('')
-    const [errorActive, setErrorActive] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
-    const showError = (message) => {
-        setErrorMessage(message);
-        setErrorActive(true);
-        setTimeout(() => {
-            setErrorActive(false);
-        }, 3000);
-    };
+const CreateAccForm = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [errorActive, setErrorActive] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-    const updateName = (value) => {
-        setName(value)
-    }
-    const updatePassword = (value => {
-        setPassword(value)
-    })
-    const updateEmail = (value => {
-        setEmail(value)
-    })
-    const updateCheckPassword = (value => {
-        setCheckPassword(value)
-    })
+  const showError = (message) => {
+    setErrorMessage(message);
+    setErrorActive(true);
+    setTimeout(() => {
+      setErrorActive(false);
+    }, 3000);
+  };
 
-    const createAcc = async (e) => {
-        e.preventDefault()
 
-        if (name === '' || email === '' || password === '' || checkPassword === '') {
-            return
-        }
-
-        let users = await api.getUsers()
-        const existedUser = users.find(item => item.email == email);
-
-        if (existedUser) {
-            showError(`User with email ${email} already exist`)
-        } else if (password !== checkPassword) {
-            showError(`Password does not match`)
-        } else {
-            const newUser = {
-                name: name,
-                email: email,
-                password: password,
-                status: true
-            };
-            dispatch(postUserThunk(newUser))
-            formElement.current.reset()
-            dispatch(setIsAuthAction(true))
-            navigate('/main')
-        }
+  const createAcc = async (values) => {
+    if (values.name === '' || values.createEmail === '' || values.createPassword === '' || values.verifyPassword === '') {
+        showError('Enter all fields')
+        return
     }
 
+    let users = await api.getUsers()
+    const existedUser = users.find(item => item.email == values.createEmail);
 
-    return (
-        <form ref={formElement}>
-            <Typography variant='h2' sx={{ fontSize: '1.5em', fontWeight: 'bold', margin: '20px 0' }}>Quick Registration</Typography>
+    if (existedUser) {
+        showError(`User with email ${values.createEmail} already exist`)
+    } else if (values.createPassword !== values.verifyPassword) {
+        showError(`Password does not match`)
+    } else {
+        const newUser = {
+            name: values.name,
+            email: values.createEmail,
+            password: values.createPassword,
+            status: true
+        };
+        dispatch(postUserThunk(newUser))
+        dispatch(setIsAuthAction(true))
+        navigate('/main')
+    }
+}
+
+  const formik = useFormik({
+    initialValues: {
+      createEmail: '',
+      name: '',
+      createPassword: '',
+      verifyPassword: ''
+    },
+    onSubmit: createAcc
+  });
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <Typography variant='h2' sx={{ fontSize: '1.5em', fontWeight: 'bold', margin: '20px 0' }}>Quick Registration</Typography>
             <Box className={`error ${errorActive ? 'error-active' : ''}`}>
                 {errorMessage}
             </Box>
             <Typography variant='h3' sx={{ fontSize: '1.17em', fontWeight: 'bold', margin: '20px 0' }}>For new customers</Typography>
-            <Input type="text" placeholder="Full name" action={updateName} />
-            <Input type="text" placeholder="Email Address" action={updateEmail} />
-            <Input type="password" placeholder="Password" action={updatePassword} />
-            <Input type="password" placeholder="Verify Password" action={updateCheckPassword} />
-            <Button title='Create Account' action={createAcc} />
-        </form>
-    );
-}
+            <input
+        id="name"
+        placeholder='Full Name'
+        name="name"
+        type="text"
+        onChange={formik.handleChange}
+        value={formik.values.name}
+      />
+      <input
+        id="createEmail"
+        placeholder='Email Address'
+        name="createEmail"
+        type="email"
+        onChange={formik.handleChange}
+        value={formik.values.createEmail}
+      />
+      <input
+        id="createPassword"
+        name="createPassword"
+        type="password"
+        placeholder='Password'
+        onChange={formik.handleChange}
+        value={formik.values.createPassword}
+      />
+       <input
+        id="verifyPassword"
+        placeholder='Verify Password'
+        name="verifyPassword"
+        type="password"
+        onChange={formik.handleChange}
+        value={formik.values.verifyPassword}
+      />
+      <Button title='Create Account' action={formik.handleSubmit} type={'submit'} />
+    </form>
+  );
+};
 
-export default CreateAccForm;
-
+export default CreateAccForm

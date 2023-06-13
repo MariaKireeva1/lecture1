@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button as MuiButton } from '@mui/material';
 
-function Button({title, action}) {
+function Button({title, action, type}) {
     return (
         <MuiButton variant="contained" sx={{
             width: '200px',
@@ -11,7 +11,7 @@ function Button({title, action}) {
             '&:hover': {
                 backgroundColor: 'rgb(2, 126, 21)'
               }
-        }} onClick={(e) => action(e)} disableRipple size='medium'>{title}</MuiButton>
+        }} onClick={(e) => action(e)} type={type} disableRipple size='medium'>{title}</MuiButton>
     );
 }
 
