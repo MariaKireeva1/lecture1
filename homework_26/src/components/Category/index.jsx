@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { api } from '../../services/api';
+import React, { useEffect } from 'react';
 import ProductItem from '../ProductItem';
 import { Box, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProductsThunk } from '../../store/products/productsAction';
 
 function Category({ name }) {
-    const [products, setProducts] = useState([]);
-
+    const products = useSelector(store => store.products.products)
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        const getProducts = async () => {
-            let products = await api.getProducts();
-            setProducts(products);
-        }
-
-        getProducts()
+        dispatch(getProductsThunk())
     }, [])
 
 

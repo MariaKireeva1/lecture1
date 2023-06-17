@@ -4,7 +4,7 @@ import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { postUserThunk, setIsAuthAction } from '../../store/usersAction';
+import { postUserThunk, setIsAuthAction } from '../../store/user/usersAction';
 import { useFormik } from 'formik';
 
 

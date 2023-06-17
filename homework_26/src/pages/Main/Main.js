@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Category from '../../components/Category';
 import Header from '../../components/Header';
-import { api } from '../../services/api';
-import { useSelector } from 'react-redux';
-
+import { getProductsThunk } from '../../store/products/productsAction';
+import { useDispatch, useSelector } from 'react-redux';
 function Main(props) {
     const [categories, setCategories] = useState([]);
-    const [products, setProducts] = useState([]);
-    let user = useSelector(store => store.user)
+    const dispatch = useDispatch()
+    const products = useSelector(store => store.products.products)
+
     useEffect(() => {
-
-        const getProducts = async () => {
-            let products = await api.getProducts();
-            setProducts(products);
-        }
-
-        getProducts()
+        dispatch(getProductsThunk())
     }, [])
 
     useEffect(() => {

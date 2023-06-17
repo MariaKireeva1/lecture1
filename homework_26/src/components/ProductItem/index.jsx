@@ -3,12 +3,12 @@ import './style.sass'
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateCartThunk } from '../../store/usersAction';
+import { updateCartThunk } from '../../store/user/usersAction';
 
 function ProductItem({ item }) {
 
     let userId = JSON.parse(localStorage.getItem('userId'));
-    let user = useSelector(store => store.user)
+    let user = useSelector(store => store.user.user)
     const navigate = useNavigate()
     const cartImgRef = useRef(null);
     const cartImgClass = user && user.shoppingCart && user.shoppingCart.find(cartItem => cartItem.id === item.id)

@@ -4,7 +4,7 @@ import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { setUserAction, setIsAuthAction } from '../../store/usersAction';
+import { setUserAction, setIsAuthAction } from '../../store/user/usersAction';
 import { useFormik } from 'formik';
 
 const SignForm = () => {
@@ -43,7 +43,6 @@ const SignForm = () => {
       dispatch(setIsAuthAction(true));
       navigate('/main');
     }
-
   };
 
 
@@ -83,5 +82,3 @@ const SignForm = () => {
 };
 
 export default SignForm
-
-

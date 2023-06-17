@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './style.sass'
 import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Box, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsAuthAction, setUserAction } from '../../store/usersAction';
+import { setIsAuthAction, setUserAction } from '../../store/user/usersAction';
 
 
 function Header(props) {
     let userId = JSON.parse(localStorage.getItem('userId'));
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    let user = useSelector(store => store.user)
+    let user = useSelector(store => store.user.user)
 
 
     const logOut = () => {
@@ -32,7 +32,7 @@ function Header(props) {
                     <Box className="header__greeting">
                         {user ?
                             <Box className="header__greeting">
-                                Hi, <Typography variant='span'>{user.name}</Typography>
+                                Hi, <Typography variant='span' onClick={() => navigate('/profile')} >{user.name}</Typography>
                             </Box>
                             :
                             <Box className="header__greeting" >
