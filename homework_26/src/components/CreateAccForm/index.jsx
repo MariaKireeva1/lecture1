@@ -6,9 +6,11 @@ import { Typography, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { postUserThunk, setIsAuthAction } from '../../store/user/usersAction';
 import { useFormik } from 'formik';
+import { useStylesCommon } from '../../common/style';
 
 
 const CreateAccForm = () => {
+  const commonClasses = useStylesCommon()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [errorActive, setErrorActive] = useState(false);
@@ -22,32 +24,31 @@ const CreateAccForm = () => {
     }, 3000);
   };
 
-
   const createAcc = async (values) => {
     if (values.name === '' || values.createEmail === '' || values.createPassword === '' || values.verifyPassword === '') {
-        showError('Enter all fields')
-        return
+      showError('Enter all fields')
+      return
     }
 
     let users = await api.getUsers()
-    const existedUser = users.find(item => item.email == values.createEmail);
+    const existedUser = users.find(item => item.email === values.createEmail);
 
     if (existedUser) {
-        showError(`User with email ${values.createEmail} already exist`)
+      showError(`User with email ${values.createEmail} already exist`)
     } else if (values.createPassword !== values.verifyPassword) {
-        showError(`Password does not match`)
+      showError(`Password does not match`)
     } else {
-        const newUser = {
-            name: values.name,
-            email: values.createEmail,
-            password: values.createPassword,
-            status: true
-        };
-        dispatch(postUserThunk(newUser))
-        dispatch(setIsAuthAction(true))
-        navigate('/main')
+      const newUser = {
+        name: values.name,
+        email: values.createEmail,
+        password: values.createPassword,
+        status: true
+      };
+      dispatch(postUserThunk(newUser))
+      dispatch(setIsAuthAction(true))
+      navigate('/main')
     }
-}
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -60,12 +61,12 @@ const CreateAccForm = () => {
   });
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Typography variant='h2' sx={{ fontSize: '1.5em', fontWeight: 'bold', margin: '20px 0' }}>Quick Registration</Typography>
-            <Box className={`error ${errorActive ? 'error-active' : ''}`}>
-                {errorMessage}
-            </Box>
-            <Typography variant='h3' sx={{ fontSize: '1.17em', fontWeight: 'bold', margin: '20px 0' }}>For new customers</Typography>
-            <input
+      <Typography variant='h2' className={commonClasses.signTitle}>Quick Registration</Typography>
+      <Box className={`${commonClasses.error} ${errorActive ? commonClasses.errorActive : ''}`}>
+        {errorMessage}
+      </Box>
+      <Typography variant='h3' className={commonClasses.signSubtitle}>For new customers</Typography>
+      <input
         id="name"
         placeholder='Full Name'
         name="name"
@@ -89,7 +90,7 @@ const CreateAccForm = () => {
         onChange={formik.handleChange}
         value={formik.values.createPassword}
       />
-       <input
+      <input
         id="verifyPassword"
         placeholder='Verify Password'
         name="verifyPassword"

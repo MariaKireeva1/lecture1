@@ -6,8 +6,10 @@ import { Typography, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { setUserAction, setIsAuthAction } from '../../store/user/usersAction';
 import { useFormik } from 'formik';
+import { useStylesCommon } from '../../common/style';
 
 const SignForm = () => {
+  const commonClasses = useStylesCommon()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [errorActive, setErrorActive] = useState(false);
@@ -55,11 +57,11 @@ const SignForm = () => {
   });
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Typography variant='h2' sx={{ fontSize: '1.5em', fontWeight: 'bold', margin: '20px 0' }}>Secure Sign In</Typography>
-      <Box className={`error ${errorActive ? 'error-active' : ''}`}>
+      <Typography variant='h2' className={commonClasses.signTitle} >Secure Sign In</Typography>
+      <Box className={`${commonClasses.error} ${errorActive ? commonClasses.errorActive : ''}`}>
         {errorMessage}
       </Box>
-      <Typography variant='h3' sx={{ fontSize: '1.17em', fontWeight: 'bold', margin: '20px 0' }}>For current customers</Typography>
+      <Typography variant='h3' className={commonClasses.signSubtitle}>For current customers</Typography>
       <input
         id="email"
         placeholder='Email Address'

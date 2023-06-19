@@ -11,6 +11,7 @@ function App(props) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const isAuth = useSelector(store => store.user.isAuth)
+
   useEffect(() => {
     let userId = JSON.parse(localStorage.getItem('userId'))
 
@@ -21,9 +22,7 @@ function App(props) {
       dispatch(setIsAuthAction(false))
     }
 
-   
     navigate('/main');
-    
   }, []);
 
 
@@ -33,8 +32,8 @@ function App(props) {
       <Route path='/login' element={<Login />} />
       <Route path='/profile' element={
         <PrivateRoute isAuth={isAuth}>
-        <UserProfile />
-      </PrivateRoute>
+          <UserProfile />
+        </PrivateRoute>
       } />
       <Route path='/cart' element={
         <PrivateRoute isAuth={isAuth}>
