@@ -23,6 +23,7 @@ export const useStyle = makeStyles(() => ({
     },
 
     headerCart: {
+        cursor: 'pointer',
         position: 'relative',
         '& img': {
             width: 50,
@@ -60,9 +61,11 @@ export const useStyle = makeStyles(() => ({
         '& img': {
             width: 70,
             height: 70
-        }
+        },
+        cursor: 'pointer'
     },
     headerGreeting: {
+        cursor: 'pointer',
         color: '#ffffff',
         fontSize: 20,
         '& span': {
